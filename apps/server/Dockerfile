@@ -10,9 +10,9 @@ RUN rm -rf /var/lib/apt/lists/*
 
 ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD true
 
-WORKDIR /server
-COPY package.json ./
-RUN npm i
+WORKDIR /apps/server
+COPY package*.json ./
+RUN npm ci
 COPY . .
 RUN npm run build
 
