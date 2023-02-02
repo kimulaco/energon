@@ -1,0 +1,21 @@
+# compiled output
+/node_modules
+
+# Logs
+logs
+*.log
+
+# OS
+.DS_Store
+
+# test
+test
+coverage
+
+# scripts
+scripts
+
+# env
+key
+.env
+.envrc

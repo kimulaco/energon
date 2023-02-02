@@ -1,0 +1,7 @@
+{
+  "name": "@energon/root",
+  "private": true,
+  "workspaces": [
+    "apps/*"
+  ]
+}
