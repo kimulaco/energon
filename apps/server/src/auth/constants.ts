@@ -1,0 +1,3 @@
+export const AUTH_GUARDS_NAME = 'X-ENERGON-API-TOKEN';
+
+export const API_TOKEN_NAME = 'X-ENERGON-API-TOKEN';

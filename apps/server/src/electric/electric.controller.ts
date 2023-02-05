@@ -4,11 +4,14 @@ import {
   Post,
   Query,
   Body,
+  UseGuards,
   BadRequestException,
   NotFoundException,
 } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 import { ElectricService } from './electric.service';
 import type { ElectricBill } from './electric.interface';
+import { AUTH_GUARDS_NAME } from '../auth/constants';
 import { createResponse, Response } from '../utils/response';
 
 @Controller('api/electric')
@@ -16,6 +19,7 @@ export class ElectricController {
   constructor(private readonly electricService: ElectricService) {}
 
   @Get()
+  @UseGuards(AuthGuard(AUTH_GUARDS_NAME))
   async getBill(
     @Query('year') year: string,
     @Query('month') month: string,
@@ -39,6 +43,7 @@ export class ElectricController {
   }
 
   @Get('list')
+  @UseGuards(AuthGuard(AUTH_GUARDS_NAME))
   async getBillList(): Promise<Response<{ list: ElectricBill[] }>> {
     const BillList = await this.electricService.getBillList();
 
@@ -48,6 +53,7 @@ export class ElectricController {
   }
 
   @Post('fetch')
+  @UseGuards(AuthGuard(AUTH_GUARDS_NAME))
   async fetchBill(
     @Body('year') year: number,
     @Body('month') month: number,
