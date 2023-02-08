@@ -8,11 +8,11 @@ interface Health {
   // TODO: Add chrome
 }
 
-@Controller('api/ping')
-export class PingController {
+@Controller('api/health')
+export class HealthController {
   @Get()
   @UseGuards(AuthGuard(AUTH_GUARDS_NAME))
-  async getBillList(): Promise<Response<{ health: Health }>> {
+  async getHealth(): Promise<Response<{ health: Health }>> {
     return createResponse(200, {
       health: {
         server: true,
