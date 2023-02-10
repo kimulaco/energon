@@ -1,3 +1,24 @@
+import { mockGoogleCloudFirestore } from 'firestore-jest-mock';
+
+mockGoogleCloudFirestore({
+  database: {
+    ElectricBill: [
+      {
+        id: '2023_1',
+        amount: 5000,
+        month: 1,
+        year: 2023,
+      },
+      {
+        id: '2022_12',
+        amount: 4000,
+        month: 12,
+        year: 2022,
+      },
+    ],
+  },
+});
+
 import { Test, TestingModule } from '@nestjs/testing';
 import { ElectricController } from './electric.controller';
 import { ElectricService } from './electric.service';
@@ -21,7 +42,7 @@ describe('ElectricController', () => {
       expect(data.bill).toEqual({
         year: 2023,
         month: 1,
-        amount: 11365,
+        amount: 5000,
       });
     });
 
@@ -51,6 +72,25 @@ describe('ElectricController', () => {
       expect(controller.getBill('0', '0')).rejects.toThrowError(
         'notfound electric bill',
       );
+    });
+  });
+
+  describe('getBillList()', () => {
+    it('success get electric bill list', async () => {
+      const data = await controller.getBillList();
+      expect(data.statusCode).toBe(200);
+      expect(data.list).toEqual([
+        {
+          amount: 5000,
+          month: 1,
+          year: 2023,
+        },
+        {
+          amount: 4000,
+          month: 12,
+          year: 2022,
+        },
+      ]);
     });
   });
 });

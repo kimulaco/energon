@@ -16,7 +16,7 @@ export const createResponse = <T>(statusCode: number, data: T): Response<T> => {
 export const createErrorResponse = <T>(
   statusCode: number,
   message: string,
-  data: T,
+  data?: T,
 ): ErrorResponse<T> => {
   return {
     ...data,
