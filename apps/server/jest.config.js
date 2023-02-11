@@ -10,4 +10,6 @@ module.exports = {
   coverageDirectory: '../coverage',
   testEnvironment: 'node',
   setupFilesAfterEnv: ['../test/jest.setup.ts'],
+  globalSetup: '../test/jest.global-setup.ts',
+  globalTeardown: '../test/jest.global-teardown.ts',
 };

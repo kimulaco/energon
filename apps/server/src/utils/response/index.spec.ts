@@ -1,24 +1,3 @@
-import { mockGoogleCloudFirestore } from 'firestore-jest-mock';
-
-mockGoogleCloudFirestore({
-  database: {
-    ElectricBill: [
-      {
-        id: '2023_1',
-        amount: 5000,
-        month: 1,
-        year: 2023,
-      },
-      {
-        id: '2022_12',
-        amount: 4000,
-        month: 12,
-        year: 2022,
-      },
-    ],
-  },
-});
-
 import { createResponse, createErrorResponse } from './index';
 
 describe('createResponse', () => {

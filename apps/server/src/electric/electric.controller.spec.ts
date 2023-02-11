@@ -22,6 +22,7 @@ mockGoogleCloudFirestore({
 import { Test, TestingModule } from '@nestjs/testing';
 import { ElectricController } from './electric.controller';
 import { ElectricService } from './electric.service';
+import { AnyForTest } from '../../test/types/';
 
 describe('ElectricController', () => {
   let controller: ElectricController;
@@ -91,6 +92,48 @@ describe('ElectricController', () => {
           year: 2022,
         },
       ]);
+    });
+  });
+
+  describe('fetchBill()', () => {
+    it('success fetch electric bill', async () => {
+      const data = await controller.fetchBill(2023, 1);
+      expect(data.statusCode).toBe(200);
+      expect(data.bill).toEqual({
+        amount: 5000,
+        month: 1,
+        year: 2023,
+      });
+    });
+
+    it('year required', async () => {
+      expect(
+        controller.fetchBill('' as AnyForTest, '1' as AnyForTest),
+      ).rejects.toThrow('year required');
+    });
+
+    it('month required', async () => {
+      expect(
+        controller.fetchBill('2023' as AnyForTest, '' as AnyForTest),
+      ).rejects.toThrow('month required');
+    });
+
+    it('year is not numric', async () => {
+      expect(
+        controller.fetchBill('now' as AnyForTest, '1' as AnyForTest),
+      ).rejects.toThrow('year is not numric');
+    });
+
+    it('month is not numric', async () => {
+      expect(
+        controller.fetchBill('2023' as AnyForTest, 'now' as AnyForTest),
+      ).rejects.toThrow('month is not numric');
+    });
+
+    it('notfound electric bill', async () => {
+      expect(
+        controller.fetchBill('1' as AnyForTest, '1' as AnyForTest),
+      ).rejects.toThrow('notfound electric bill');
     });
   });
 });

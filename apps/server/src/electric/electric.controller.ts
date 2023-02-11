@@ -12,6 +12,7 @@ import { AuthGuard } from '@nestjs/passport';
 import { ElectricService } from './electric.service';
 import type { ElectricBill } from './electric.interface';
 import { AUTH_GUARDS_NAME } from '../auth/constants';
+import { isEmptyParam } from '../utils/params';
 import { createResponse, Response } from '../utils/response';
 
 @Controller('api/electric')
@@ -24,8 +25,8 @@ export class ElectricController {
     @Query('year') year: string,
     @Query('month') month: string,
   ): Promise<Response<{ bill: ElectricBill }>> {
-    if (!year) throw new BadRequestException('year required');
-    if (!month) throw new BadRequestException('month required');
+    if (isEmptyParam(year)) throw new BadRequestException('year required');
+    if (isEmptyParam(month)) throw new BadRequestException('month required');
 
     const _year = Number(year);
     const _month = Number(month);
@@ -58,8 +59,8 @@ export class ElectricController {
     @Body('year') year: number,
     @Body('month') month: number,
   ): Promise<Response<{ bill: ElectricBill }>> {
-    if (!year) throw new BadRequestException('year required');
-    if (!month) throw new BadRequestException('month required');
+    if (isEmptyParam(year)) throw new BadRequestException('year required');
+    if (isEmptyParam(month)) throw new BadRequestException('month required');
 
     const _year = Number(year);
     const _month = Number(month);

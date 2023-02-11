@@ -22,7 +22,6 @@ export const crawlElectricBill = async (
 
     await page.goto(ELECTRIC_BILL_URL);
     await loginElectricBill(page);
-    await waitHistoryPage(page);
     amount = await scrapeElectricBillFromHidstory(page, year, month);
   } catch (error) {
     console.error(error);
@@ -49,10 +48,6 @@ const loginElectricBill = async (page: Page): Promise<void> => {
     page.waitForNavigation({ waitUntil: 'load' }),
     page.click('.f-login button[type="submit"].f-login__btn'),
   ]);
-};
-
-const waitHistoryPage = async (page: Page): Promise<void> => {
-  await page.waitForSelector('.c-table');
 };
 
 const scrapeElectricBillFromHidstory = async (

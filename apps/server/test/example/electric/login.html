@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>Electric Bill</title>
+</head>
+<body>
+  <main>
+    <form class="f-login">
+      <input type="text" name="login_id">
+      <input type="password" name="password">
+      <button type="submit" class="f-login__btn">Login</button>
+    </form>
+  </main>
+
+  <script>
+    const form = document.querySelector('.f-login');
+
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+
+      location.href = './bill.html';
+    });
+  </script>
+</body>
+</html>
