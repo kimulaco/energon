@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>Gas Bill</title>
+</head>
+<body>
+  <main>
+    <select id="webdatails-yearmonth"></select>
+    <div>
+      <dl id="bill">
+        <dt>ご請求額（税込）</dt><dd id="amount"></dd>
+      </dl>
+    </div>
+  </main>
+
+  <script>
+    const BILL_LIST = {
+      '202301': {
+        amount: '5,000円',
+        year: 2023,
+        month: 1,
+      },
+      '202212': {
+        amount: '4,000円',
+        year: 2022,
+        month: 12,
+      },
+    };
+
+    const selectElm = document.getElementById('webdatails-yearmonth');
+    const billElm = document.getElementById('bill');
+    const amountElm = document.getElementById('amount');
+
+    const handleChangeSelect = (value) => {
+      if (!value || !BILL_LIST[value]?.amount || !amountElm) return;
+      amountElm.innerText = BILL_LIST[value].amount;
+    };
+
+    const initSelect = () => {
+      let selectInnerHtmlString = '';
+      const billListKeys = Object.keys(BILL_LIST).sort((a, b) => b - a);
+
+      for (const key of billListKeys) {
+        const bill = BILL_LIST[key];
+        selectInnerHtmlString += `<option value="${key}">${bill.year}年${bill.month}月</option>`;
+      }
+
+      selectElm.innerHTML = selectInnerHtmlString;
+
+      selectElm.addEventListener('change', () => {
+        handleChangeSelect(event?.target?.value);
+      });
+
+      handleChangeSelect(billListKeys[0]);
+    };
+
+    initSelect();
+  </script>
+</body>
+</html>

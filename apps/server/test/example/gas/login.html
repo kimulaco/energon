@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>Electric Bill</title>
+</head>
+<body>
+  <main>
+    <form id="form">
+      <input type="text" id="login-localuserid__c">
+      <input type="password" id="login-password">
+      <button type="submit" id="login-submit">Login</button>
+    </form>
+  </main>
+
+  <script>
+    const form = document.querySelector('#form');
+
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+
+      location.href = './menu.html';
+    });
+  </script>
+</body>
+</html>

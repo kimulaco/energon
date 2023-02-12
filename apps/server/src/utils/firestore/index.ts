@@ -1,6 +1,11 @@
 import { Firestore } from '@google-cloud/firestore';
 import { STAGE } from '../stage';
 
+export const COLLECTION = {
+  ELECTRIC: 'ElectricBill',
+  GAS: 'GasBill',
+} as const;
+
 export const createFirestore = (): Firestore => {
   const stage = process.env.STAGE_ENV;
 

@@ -1,11 +1,11 @@
 import type { DocumentData } from '@google-cloud/firestore';
-import type { ElectricBill, Year, Month } from '../electric.interface';
+import type { GasBill, Year, Month } from '../gas.interface';
 
 export const createDocId = (year: Year, month: Month): string => {
   return `${year}_${month}`;
 };
 
-export const marshalElectricBill = (data: DocumentData): ElectricBill => {
+export const marshalGasBill = (data: DocumentData): GasBill => {
   const _year = Number(data.year);
   const _month = Number(data.month);
   const _amount = Number(data.amount);

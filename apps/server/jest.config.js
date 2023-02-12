@@ -7,6 +7,7 @@ module.exports = {
     '^.+\\.(t|j)s$': 'ts-jest',
   },
   collectCoverageFrom: ['**/*.(t|j)s'],
+  coveragePathIgnorePatterns: ['src/main.ts'],
   coverageDirectory: '../coverage',
   testEnvironment: 'node',
   setupFilesAfterEnv: ['../test/jest.setup.ts'],

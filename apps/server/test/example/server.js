@@ -10,6 +10,7 @@ app.use((req, res, next) => {
 });
 
 app.use('/electric', express.static(path.join(__dirname, '/electric')));
+app.use('/gas', express.static(path.join(__dirname, '/gas')));
 
 app.listen(TEST_EXAMPLE_SITE_PORT, () => {
   console.log(`listening on http://localhost:${TEST_EXAMPLE_SITE_PORT}`);

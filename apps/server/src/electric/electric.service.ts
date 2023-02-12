@@ -1,11 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import {
-  createDocId,
-  marshalElectricBill,
-  COLLECTION,
-} from './utils/firestore';
+import { createDocId, marshalElectricBill } from './utils/firestore';
 import { crawlElectricBill } from './utils/crawler';
-import { createFirestore } from '../utils/firestore';
+import { createFirestore, COLLECTION } from '../utils/firestore';
 import type { ElectricBill } from './electric.interface';
 
 @Injectable()
@@ -15,7 +11,7 @@ export class ElectricService {
     month: number,
   ): Promise<ElectricBill | undefined> {
     const firestore = createFirestore();
-    const collectionRef = firestore.collection(COLLECTION.BILL);
+    const collectionRef = firestore.collection(COLLECTION.ELECTRIC);
     const docId = createDocId(year, month);
     const snapshot = await collectionRef.doc(docId).get();
 
@@ -28,7 +24,7 @@ export class ElectricService {
 
   async getBillList(): Promise<ElectricBill[]> {
     const firestore = createFirestore();
-    const collectionRef = firestore.collection(COLLECTION.BILL);
+    const collectionRef = firestore.collection(COLLECTION.ELECTRIC);
     const query = collectionRef
       .orderBy('year', 'desc')
       .orderBy('month', 'desc');
@@ -53,7 +49,7 @@ export class ElectricService {
     }
 
     const firestore = createFirestore();
-    const collectionRef = firestore.collection(COLLECTION.BILL);
+    const collectionRef = firestore.collection(COLLECTION.ELECTRIC);
     const docId = createDocId(year, month);
     const bill: ElectricBill = {
       year,
