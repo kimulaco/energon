@@ -1,4 +1,4 @@
-import React from "react";
+import type { FC } from "react";
 
 const checkHealth = async () => {
   const baseUrl = import.meta.env.VITE_API_BASE_URL || "";
@@ -26,9 +26,9 @@ const checkHealth = async () => {
   }
 };
 
-const App = () => {
+const PageIndex: FC = () => {
   return (
-    <div className="App">
+    <div className="PageIndex">
       <button type="button" onClick={checkHealth}>
         Check server health
       </button>
@@ -36,4 +36,4 @@ const App = () => {
   );
 };
 
-export default App;
+export default PageIndex;
