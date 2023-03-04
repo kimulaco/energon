@@ -1,6 +1,11 @@
-import { useCallback } from "react";
+import { useCallback, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
-import { atom, useRecoilState } from "recoil";
+import {
+  atom,
+  useRecoilState,
+  useResetRecoilState,
+  useRecoilCallback,
+} from "recoil";
 import Cookies from "js-cookie";
 import { logger } from "../logger/";
 import { useFetch } from "../fetch/useFetch";
@@ -11,8 +16,8 @@ export interface UserState {
   isLogined: boolean;
 }
 
-const userState = atom<UserState>({
-  key: "userState",
+const userAtom = atom<UserState>({
+  key: "userAtom",
   default: {
     user: {
       id: "",
@@ -30,45 +35,67 @@ interface ResponseLogin {
 
 const ID_COOKIE_KEY = "enrgid";
 const TOKEN_COOKIE_KEY = "enrgt";
+const COOKIE_OPTION = {
+  expires: 1,
+  secure: true,
+};
 
 export const useUser = () => {
   const navigate = useNavigate();
   const { doFetch } = useFetch<ResponseLogin>();
-  const [state, setState] = useRecoilState(userState);
+  const [state, setState] = useRecoilState(userAtom);
+  const resetState = useResetRecoilState(userAtom);
 
-  const login = useCallback(
-    async (id: string, password: string): Promise<ResponseLogin> => {
+  const login = useMemo(() => {
+    return async (id: string, password: string): Promise<ResponseLogin> => {
       try {
         const data = await doFetch("/api/user/login", {
           method: "POST",
           body: { id, password },
         });
 
-        if (!data) {
-          throw new Error("in process of login");
-        }
+        if (!data) throw new Error("in process of login");
 
-        Cookies.set(ID_COOKIE_KEY, data.user.id, {
-          expires: 1,
-          secure: true,
-        });
-        Cookies.set(TOKEN_COOKIE_KEY, data.user.token, {
-          expires: 1,
-          secure: true,
-        });
-
-        setState({
-          user: data.user,
-          isLogined: true,
-        });
+        Cookies.set(ID_COOKIE_KEY, data.user.id, COOKIE_OPTION);
+        Cookies.set(TOKEN_COOKIE_KEY, data.user.token, COOKIE_OPTION);
+        setState({ user: data.user, isLogined: true });
 
         return data;
       } catch (error) {
         logger.error(error);
         throw error;
       }
+    };
+  }, [setState]);
+
+  const logout = useRecoilCallback(
+    ({ snapshot }) => {
+      return async (): Promise<void> => {
+        const { user } = await snapshot.getPromise(userAtom);
+        const token = Cookies.get(TOKEN_COOKIE_KEY);
+
+        try {
+          if (!user.id || !token) throw new Error("required login");
+
+          const data = await doFetch("/api/user/logout", {
+            method: "POST",
+            headers: { "X-ENERGON-API-TOKEN": token },
+            body: { id: user.id },
+          });
+
+          if (!data) throw new Error("in process fetching");
+
+          Cookies.remove(ID_COOKIE_KEY);
+          Cookies.remove(TOKEN_COOKIE_KEY);
+          resetState();
+          navigate("/login", { replace: true });
+        } catch (error) {
+          logger.error(error);
+          throw error;
+        }
+      };
     },
-    []
+    [state.user.id]
   );
 
   const getUserInfo = useCallback(async (): Promise<ResponseLogin> => {
@@ -83,24 +110,19 @@ export const useUser = () => {
         useCache: true,
       });
 
-      if (!data) {
-        throw new Error("in process of login");
-      }
+      if (!data) throw new Error("in process of login");
 
-      setState({
-        user: data.user,
-        isLogined: true,
-      });
+      setState({ user: data.user, isLogined: true });
 
       return data;
     } catch (error) {
-      // logger.error(error);
+      logger.error(error);
       Cookies.remove(ID_COOKIE_KEY);
       Cookies.remove(TOKEN_COOKIE_KEY);
       navigate("/login", { replace: true });
       throw error;
     }
-  }, []);
+  }, [setState]);
 
-  return { state, login, getUserInfo };
+  return { state, login, logout, getUserInfo };
 };
