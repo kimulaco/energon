@@ -1,3 +1,4 @@
+import { FieldValue } from '@google-cloud/firestore';
 import type {
   Firestore,
   CollectionReference,
@@ -41,17 +42,41 @@ export class UserStore {
     return { ref: this.ref, doc: this.doc };
   }
 
-  async verifyToken(token: string): Promise<void> {
+  async verifyToken(token: string): Promise<{
+    ref: DocumentReference<DocumentData>;
+    doc: QueryDocumentSnapshot<DocumentData>;
+  }> {
     const query = this.collectionRef.where('token', '==', token);
     const snapshot = await query.get();
 
     if (snapshot.size < 1) throw { code: 401 };
     if (snapshot.size > 1) throw { code: 500 };
 
-    const doc = snapshot.docs[0];
-    const { expireAt } = doc.data();
+    this.doc = snapshot.docs[0];
+    this.ref = this.collectionRef.doc(this.doc.id);
+    const { expireAt } = this.doc.data();
 
     if (!isBefore(new Date(), fromUnixTime(expireAt))) throw { code: 401 };
+
+    return { ref: this.ref, doc: this.doc };
+  }
+
+  async revokeToken(id: string, token: string): Promise<void> {
+    const query = this.collectionRef
+      .where('id', '==', id)
+      .where('token', '==', token);
+    const snapshot = await query.get();
+
+    if (snapshot.size < 1) throw { code: 401 };
+    if (snapshot.size > 1) throw { code: 500 };
+
+    this.doc = snapshot.docs[0];
+    this.ref = this.collectionRef.doc(this.doc.id);
+
+    await this.ref.update({
+      token: FieldValue.delete(),
+      expireAt: FieldValue.delete(),
+    });
   }
 
   async updateExpireAt(): Promise<void> {

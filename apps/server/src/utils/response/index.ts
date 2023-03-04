@@ -6,7 +6,10 @@ export type ErrorResponse<T> = Response<T> & {
   message: string;
 };
 
-export const createResponse = <T>(statusCode: number, data: T): Response<T> => {
+export const createResponse = <T>(
+  statusCode: number,
+  data?: T,
+): Response<T> => {
   return {
     ...data,
     statusCode,
