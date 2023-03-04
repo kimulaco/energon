@@ -3,7 +3,7 @@ import {
   Post,
   Body,
   BadRequestException,
-  ForbiddenException,
+  UnauthorizedException,
   InternalServerErrorException,
 } from '@nestjs/common';
 import { UserService } from './user.service';
@@ -31,8 +31,8 @@ export class UserController {
       if (error.code === 400 && error.message) {
         throw new BadRequestException(error.message);
       }
-      if (error.code === 403) {
-        throw new ForbiddenException();
+      if (error.code === 401) {
+        throw new UnauthorizedException();
       }
       throw new InternalServerErrorException(
         error.message || 'Internal Server Error',

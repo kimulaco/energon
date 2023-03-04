@@ -1,8 +1,8 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
-import { ConfigService } from '@nestjs/config';
 import Strategy from 'passport-headerapikey';
 import { AUTH_GUARDS_NAME, API_TOKEN_NAME } from './constants';
+import { UserStore } from '../utils/user/store';
 
 type DoneFunction = (
   error: UnauthorizedException | null,
@@ -14,23 +14,32 @@ export class HeaderApiKeyStrategy extends PassportStrategy(
   Strategy,
   AUTH_GUARDS_NAME,
 ) {
-  constructor(private readonly configService: ConfigService) {
+  constructor() {
     super(
       {
         header: API_TOKEN_NAME,
         prefix: '',
       },
       true,
-      (apiKey: string, done: DoneFunction): void => this.validate(apiKey, done),
+      async (apiKey: string, done: DoneFunction): Promise<void> =>
+        this.validate(apiKey, done),
     );
   }
 
-  public validate = (apiKey: string, done: DoneFunction) => {
-    if (this.configService.get<string>('X_ENERGON_API_TOKEN') === apiKey) {
-      done(null, true);
+  public validate = async (token: string, done: DoneFunction) => {
+    if (!token) {
+      done(new UnauthorizedException(), null);
       return;
     }
 
-    done(new UnauthorizedException(), null);
+    const userStore = new UserStore();
+
+    try {
+      await userStore.verifyToken(token);
+      done(null, true);
+    } catch (error) {
+      console.error(error);
+      done(new UnauthorizedException(), null);
+    }
   };
 }

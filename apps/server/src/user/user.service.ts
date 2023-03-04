@@ -1,63 +1,36 @@
-import { add as addDate } from 'date-fns';
 import { Injectable } from '@nestjs/common';
-import type { UserDoc, UserDocData } from './user.interface';
-import { createFirestore, COLLECTION } from '../utils/firestore';
-import { createUUID } from '../utils/uuid';
+import type { UserDocData } from './user.interface';
+import { UserStore } from '../utils/user/store';
 
 @Injectable()
 export class UserService {
   async login(id: string, password: string): Promise<UserDocData | null> {
-    const { ref, doc } = await this.getUser(id, password);
-    const user = doc.data();
-    const token = createUUID();
-    const expireAt = addDate(new Date(), { minutes: 30 }).toLocaleString();
-
-    const userData: UserDocData = {
-      id: user.id,
-      name: user.name,
-      token,
-      expireAt,
-    };
+    const userStore = await this.getUserStore(id, password);
+    const user = userStore.doc.data();
 
     try {
-      await ref.update({ token, expireAt });
+      const { token, expireAt } = await userStore.updateToken();
+
+      await userStore.ref.update({ token, expireAt });
+
+      return {
+        id: user.id,
+        name: user.name,
+        token,
+      };
     } catch (error) {
       console.error(error);
       throw { code: 500 };
     }
-
-    return userData;
   }
 
-  async getUser(id: string, password: string): Promise<UserDoc> {
-    if (!id) {
-      throw { code: 400, message: 'requred id' };
-    }
+  async getUserStore(id: string, password: string): Promise<UserStore> {
+    if (!id) throw { code: 0, message: 'requred id' };
+    if (!password) throw { code: 400, message: 'requred password' };
 
-    if (!password) {
-      throw { code: 400, message: 'requred password' };
-    }
+    const userStore = new UserStore();
+    await userStore.find(id, password);
 
-    const firestore = createFirestore();
-    const collectionRef = firestore.collection(COLLECTION.USER);
-    const query = collectionRef
-      .where('id', '==', id)
-      .where('password', '==', password);
-    const snapshot = await query.get();
-
-    if (snapshot.size < 1) {
-      throw { code: 403 };
-    }
-
-    if (snapshot.size !== 1) {
-      throw { code: 500 };
-    }
-
-    const doc = snapshot.docs[0];
-
-    return {
-      ref: collectionRef.doc(doc.id),
-      doc: doc,
-    };
+    return userStore;
   }
 }
