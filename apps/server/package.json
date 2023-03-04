@@ -25,6 +25,7 @@
     "@nestjs/core": "^9.3.7",
     "@nestjs/passport": "^9.0.3",
     "@nestjs/platform-express": "^9.3.7",
+    "date-fns": "^2.29.3",
     "passport": "^0.6.0",
     "passport-headerapikey": "^1.2.2",
     "puppeteer-core": "^19.6.3",

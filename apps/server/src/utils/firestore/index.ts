@@ -4,6 +4,7 @@ import { STAGE } from '../stage';
 export const COLLECTION = {
   ELECTRIC: 'ElectricBill',
   GAS: 'GasBill',
+  USER: 'User',
 } as const;
 
 export const createFirestore = (): Firestore => {
