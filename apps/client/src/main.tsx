@@ -1,4 +1,4 @@
-import React from "react";
+import { RecoilRoot } from "recoil";
 import { createRoot } from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import LayoutDefault from "./layouts/Default";
@@ -24,5 +24,7 @@ const router = createBrowserRouter([
 ]);
 
 createRoot(document.getElementById("root") as HTMLElement).render(
-  <RouterProvider router={router} />
+  <RecoilRoot>
+    <RouterProvider router={router} />
+  </RecoilRoot>
 );

@@ -1,44 +1,18 @@
 import { useState, useCallback } from "react";
 import type { FC, ChangeEvent, FormEvent } from "react";
+import { useNavigate } from "react-router-dom";
+import { useUser } from "../../utils/user/useUser";
+import { logger } from "../../utils/logger/";
+import { UserInfo } from "../../interfaces/user";
 
 interface FormValue {
   id: string;
   password: string;
 }
 
-const requestLogin = async (value: FormValue) => {
-  const baseUrl = import.meta.env.VITE_API_BASE_URL || "";
-  const token = import.meta.env.VITE_X_ENERGON_API_TOKEN || "";
-
-  try {
-    const response = await fetch(`${baseUrl}/api/user/login`, {
-      method: "POST",
-      mode: "cors",
-      headers: {
-        "Content-Type": "application/json",
-        "X-ENERGON-API-TOKEN": token,
-      },
-      body: JSON.stringify({
-        id: value.id,
-        password: value.password,
-      }),
-    });
-    if (!response.ok) {
-      if (!response.body) {
-        throw null;
-      }
-    }
-
-    const data = await response.json();
-    console.log(data);
-
-    return data;
-  } catch (error) {
-    console.error(error);
-  }
-};
-
 const PageLogin: FC = () => {
+  const navigate = useNavigate();
+  const { login } = useUser();
   const [formValue, setFormValue] = useState<FormValue>({
     id: "",
     password: "",
@@ -56,9 +30,13 @@ const PageLogin: FC = () => {
   );
 
   const handleSubmitForm = useCallback(
-    (event: FormEvent<HTMLFormElement>) => {
+    async (event: FormEvent<HTMLFormElement>) => {
       event.preventDefault();
-      requestLogin(formValue);
+
+      const data = await login(formValue.id, formValue.password);
+      logger.log(data);
+
+      navigate("/", { replace: true });
     },
     [formValue]
   );

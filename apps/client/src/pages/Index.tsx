@@ -1,4 +1,6 @@
+import { useEffect } from "react";
 import type { FC } from "react";
+import { useUser } from "../utils/user/useUser";
 
 const checkHealth = async () => {
   const baseUrl = import.meta.env.VITE_API_BASE_URL || "";
@@ -27,6 +29,14 @@ const checkHealth = async () => {
 };
 
 const PageIndex: FC = () => {
+  const { state, getUserInfo } = useUser();
+
+  useEffect(() => {
+    if (state.isLogined) return;
+
+    getUserInfo().catch(() => {});
+  }, []);
+
   return (
     <div className="PageIndex">
       <button type="button" onClick={checkHealth}>
