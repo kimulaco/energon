@@ -35,8 +35,8 @@ interface ResponseLogin {
 
 const ID_COOKIE_KEY = "enrgid";
 const TOKEN_COOKIE_KEY = "enrgt";
-const COOKIE_OPTION = {
-  expires: 1,
+const COOKIE_OPTION: Cookies.CookieAttributes = {
+  expires: 1 / 48, // 30 minutes
   secure: true,
 };
 
