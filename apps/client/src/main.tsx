@@ -8,7 +8,9 @@ import PageLogin from './pages/login/Index';
 const main = async () => {
   if (import.meta.env.DEV) {
     const { worker } = await import('./mocks/browser');
-    worker.start();
+    worker.start({
+      onUnhandledRequest: 'bypass',
+    });
   }
 
   const router = createBrowserRouter([

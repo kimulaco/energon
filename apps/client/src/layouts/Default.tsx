@@ -1,7 +1,7 @@
-import { useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Outlet } from 'react-router-dom';
 import AppHeader from '../components/AppHeader/';
-import { useFetch } from '../utils/fetch/useFetch';
+import { useAxios } from '../utils/axios/useAxios';
 import { useUser } from '../utils/user/useUser';
 
 interface Health {
@@ -13,9 +13,18 @@ interface ResponseHealth {
   health: Health;
 }
 
+interface LayoutState {
+  canRenderPage: boolean;
+}
+
 const LayoutDefault = () => {
+  const [layoutState, setLayoutState] = useState<LayoutState>({
+    canRenderPage: false,
+  });
   const { state: userState, logout } = useUser();
-  const { doFetch } = useFetch<ResponseHealth>();
+  const { doFetch: getHealth } = useAxios<ResponseHealth>('/api/health', {
+    method: 'get',
+  });
 
   const handleClickLogout = useCallback(async () => {
     console.log(userState);
@@ -27,18 +36,20 @@ const LayoutDefault = () => {
   }, [userState.user.id, logout]);
 
   useEffect(() => {
-    doFetch('/api/health').catch(() => {
-      // TODO: Use cache utility
-    });
+    getHealth()
+      .then(() => {
+        setLayoutState({ canRenderPage: true });
+      })
+      .catch(() => {
+        // TODO: redirect error pag
+      });
   }, []);
 
   return (
     <div className="LayoutDefault">
       <AppHeader userState={userState} onClickLogout={handleClickLogout} />
 
-      <div>
-        <Outlet />
-      </div>
+      <div>{layoutState.canRenderPage && <Outlet />}</div>
     </div>
   );
 };

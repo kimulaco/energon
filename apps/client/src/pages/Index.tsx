@@ -1,49 +1,23 @@
-import { useEffect } from 'react';
+import { useEffect, useCallback } from 'react';
 import type { FC } from 'react';
 import { useUser } from '../utils/user/useUser';
 
-const checkHealth = async () => {
-  const baseUrl = import.meta.env.VITE_API_BASE_URL || '';
-  const token = import.meta.env.VITE_X_ENERGON_API_TOKEN || '';
-
-  try {
-    const response = await fetch(`${baseUrl}/api/health`, {
-      mode: 'cors',
-      headers: {
-        'X-ENERGON-API-TOKEN': token,
-      },
-    });
-    if (!response.ok) {
-      if (!response.body) {
-        throw null;
-      }
-    }
-
-    const data = await response.json();
-    console.log(data);
-
-    return data;
-  } catch (error) {
-    console.error(error);
-  }
-};
-
 const PageIndex: FC = () => {
-  const { state, getUserInfo } = useUser();
+  const { state: userState, getUserInfo } = useUser();
+
+  const initPage = useCallback(async () => {
+    if (userState.isLogined) return;
+
+    getUserInfo();
+  }, [getUserInfo]);
 
   useEffect(() => {
-    if (state.isLogined) return;
-
-    getUserInfo().catch(() => {
-      // TODO: Use cache utility
-    });
+    initPage();
   }, []);
 
   return (
     <div className="PageIndex">
-      <button type="button" onClick={checkHealth}>
-        Check server health
-      </button>
+      <p>top</p>
     </div>
   );
 };
