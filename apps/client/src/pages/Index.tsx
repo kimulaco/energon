@@ -1,16 +1,16 @@
-import { useEffect } from "react";
-import type { FC } from "react";
-import { useUser } from "../utils/user/useUser";
+import { useEffect } from 'react';
+import type { FC } from 'react';
+import { useUser } from '../utils/user/useUser';
 
 const checkHealth = async () => {
-  const baseUrl = import.meta.env.VITE_API_BASE_URL || "";
-  const token = import.meta.env.VITE_X_ENERGON_API_TOKEN || "";
+  const baseUrl = import.meta.env.VITE_API_BASE_URL || '';
+  const token = import.meta.env.VITE_X_ENERGON_API_TOKEN || '';
 
   try {
     const response = await fetch(`${baseUrl}/api/health`, {
-      mode: "cors",
+      mode: 'cors',
       headers: {
-        "X-ENERGON-API-TOKEN": token,
+        'X-ENERGON-API-TOKEN': token,
       },
     });
     if (!response.ok) {
@@ -34,7 +34,9 @@ const PageIndex: FC = () => {
   useEffect(() => {
     if (state.isLogined) return;
 
-    getUserInfo().catch(() => {});
+    getUserInfo().catch(() => {
+      // TODO: Use cache utility
+    });
   }, []);
 
   return (

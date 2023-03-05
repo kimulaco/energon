@@ -1,8 +1,8 @@
-import { useEffect, useCallback } from "react";
-import { Outlet } from "react-router-dom";
-import AppHeader from "../components/AppHeader/";
-import { useFetch } from "../utils/fetch/useFetch";
-import { useUser } from "../utils/user/useUser";
+import { useEffect, useCallback } from 'react';
+import { Outlet } from 'react-router-dom';
+import AppHeader from '../components/AppHeader/';
+import { useFetch } from '../utils/fetch/useFetch';
+import { useUser } from '../utils/user/useUser';
 
 interface Health {
   server: boolean;
@@ -21,11 +21,15 @@ const LayoutDefault = () => {
     console.log(userState);
     try {
       await logout();
-    } catch {}
+    } catch {
+      // TODO: Use cache utility
+    }
   }, [userState.user.id, logout]);
 
   useEffect(() => {
-    doFetch("/api/health").catch(() => {});
+    doFetch('/api/health').catch(() => {
+      // TODO: Use cache utility
+    });
   }, []);
 
   return (

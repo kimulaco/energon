@@ -1,30 +1,30 @@
-import { RecoilRoot } from "recoil";
-import { createRoot } from "react-dom/client";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import LayoutDefault from "./layouts/Default";
-import PageIndex from "./pages/Index";
-import PageLogin from "./pages/login/Index";
+import { RecoilRoot } from 'recoil';
+import { createRoot } from 'react-dom/client';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import LayoutDefault from './layouts/Default';
+import PageIndex from './pages/Index';
+import PageLogin from './pages/login/Index';
 
 const router = createBrowserRouter([
   {
-    path: "/",
+    path: '/',
     element: <LayoutDefault />,
     children: [
       {
-        path: "/",
+        path: '/',
         element: <PageIndex />,
         index: true,
       },
       {
-        path: "/login",
+        path: '/login',
         element: <PageLogin />,
       },
     ],
   },
 ]);
 
-createRoot(document.getElementById("root") as HTMLElement).render(
+createRoot(document.getElementById('root') as HTMLElement).render(
   <RecoilRoot>
     <RouterProvider router={router} />
-  </RecoilRoot>
+  </RecoilRoot>,
 );

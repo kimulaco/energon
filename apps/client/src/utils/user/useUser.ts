@@ -1,15 +1,15 @@
-import { useCallback, useMemo } from "react";
-import { useNavigate } from "react-router-dom";
+import { useCallback, useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   atom,
   useRecoilState,
   useResetRecoilState,
   useRecoilCallback,
-} from "recoil";
-import Cookies from "js-cookie";
-import { logger } from "../logger/";
-import { useFetch } from "../fetch/useFetch";
-import { UserInfo } from "../../interfaces/user";
+} from 'recoil';
+import Cookies from 'js-cookie';
+import { logger } from '../logger/';
+import { useFetch } from '../fetch/useFetch';
+import { UserInfo } from '../../interfaces/user';
 
 export interface UserState {
   user: UserInfo;
@@ -17,12 +17,12 @@ export interface UserState {
 }
 
 const userAtom = atom<UserState>({
-  key: "userAtom",
+  key: 'userAtom',
   default: {
     user: {
-      id: "",
-      name: "",
-      token: "",
+      id: '',
+      name: '',
+      token: '',
     },
     isLogined: false,
   },
@@ -33,8 +33,8 @@ interface ResponseLogin {
   user: UserInfo;
 }
 
-const ID_COOKIE_KEY = "enrgid";
-const TOKEN_COOKIE_KEY = "enrgt";
+const ID_COOKIE_KEY = 'enrgid';
+const TOKEN_COOKIE_KEY = 'enrgt';
 const COOKIE_OPTION: Cookies.CookieAttributes = {
   expires: 1 / 48, // 30 minutes
   secure: true,
@@ -49,12 +49,12 @@ export const useUser = () => {
   const login = useMemo(() => {
     return async (id: string, password: string): Promise<ResponseLogin> => {
       try {
-        const data = await doFetch("/api/user/login", {
-          method: "POST",
+        const data = await doFetch('/api/user/login', {
+          method: 'POST',
           body: { id, password },
         });
 
-        if (!data) throw new Error("in process of login");
+        if (!data) throw new Error('in process of login');
 
         Cookies.set(ID_COOKIE_KEY, data.user.id, COOKIE_OPTION);
         Cookies.set(TOKEN_COOKIE_KEY, data.user.token, COOKIE_OPTION);
@@ -75,27 +75,27 @@ export const useUser = () => {
         const token = Cookies.get(TOKEN_COOKIE_KEY);
 
         try {
-          if (!user.id || !token) throw new Error("required login");
+          if (!user.id || !token) throw new Error('required login');
 
-          const data = await doFetch("/api/user/logout", {
-            method: "POST",
-            headers: { "X-ENERGON-API-TOKEN": token },
+          const data = await doFetch('/api/user/logout', {
+            method: 'POST',
+            headers: { 'X-ENERGON-API-TOKEN': token },
             body: { id: user.id },
           });
 
-          if (!data) throw new Error("in process fetching");
+          if (!data) throw new Error('in process fetching');
 
           Cookies.remove(ID_COOKIE_KEY);
           Cookies.remove(TOKEN_COOKIE_KEY);
           resetState();
-          navigate("/login", { replace: true });
+          navigate('/login', { replace: true });
         } catch (error) {
           logger.error(error);
           throw error;
         }
       };
     },
-    [state.user.id]
+    [state.user.id],
   );
 
   const getUserInfo = useCallback(async (): Promise<ResponseLogin> => {
@@ -103,14 +103,14 @@ export const useUser = () => {
     const token = Cookies.get(TOKEN_COOKIE_KEY);
 
     try {
-      if (!id || !token) throw new Error("required login");
+      if (!id || !token) throw new Error('required login');
 
       const data = await doFetch(`/api/user/${id}`, {
-        headers: { "X-ENERGON-API-TOKEN": token },
+        headers: { 'X-ENERGON-API-TOKEN': token },
         useCache: true,
       });
 
-      if (!data) throw new Error("in process of login");
+      if (!data) throw new Error('in process of login');
 
       setState({ user: data.user, isLogined: true });
 
@@ -119,7 +119,7 @@ export const useUser = () => {
       logger.error(error);
       Cookies.remove(ID_COOKIE_KEY);
       Cookies.remove(TOKEN_COOKIE_KEY);
-      navigate("/login", { replace: true });
+      navigate('/login', { replace: true });
       throw error;
     }
   }, [setState]);

@@ -1,8 +1,8 @@
-import { useState, useCallback } from "react";
-import { queryStringify } from "./queryStringify";
+import { useState, useCallback } from 'react';
+import { queryStringify } from './queryStringify';
 
 type FetchOptions = {
-  method?: "GET" | "POST" | "PUT" | "DELETE";
+  method?: 'GET' | 'POST' | 'PUT' | 'DELETE';
   headers?: Record<string, string>;
   query?: Record<string, any>;
   body?: Record<string, any>;
@@ -11,12 +11,12 @@ type FetchOptions = {
 
 export const createFetchURL = (
   path: string,
-  query?: Record<string, any>
+  query?: Record<string, any>,
 ): string => {
-  const BASE_URL = import.meta.env.VITE_API_BASE_URL || "";
-  const params = query ? queryStringify(query) : "";
+  const BASE_URL = import.meta.env.VITE_API_BASE_URL || '';
+  const params = query ? queryStringify(query) : '';
 
-  return `${BASE_URL}${path}${params ? "?" + params : ""}`;
+  return `${BASE_URL}${path}${params ? '?' + params : ''}`;
 };
 
 export const useFetch = <T>() => {
@@ -50,10 +50,10 @@ export const useFetch = <T>() => {
 
       const url = createFetchURL(path, options?.query);
       const response = await fetch(url, {
-        method: options?.method || "GET",
-        mode: "cors",
+        method: options?.method || 'GET',
+        mode: 'cors',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
           ...(options?.headers || {}),
         },
         body: options?.body ? JSON.stringify(options?.body || {}) : undefined,
@@ -72,7 +72,7 @@ export const useFetch = <T>() => {
 
       return data as T;
     },
-    [state]
+    [state],
   );
 
   return { state, doFetch };

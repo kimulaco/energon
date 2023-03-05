@@ -1,8 +1,8 @@
-import { useCallback } from "react";
-import type { FC, ReactNode } from "react";
-import { Link } from "react-router-dom";
-import styles from "./index.module.css";
-import type { UserState } from "../../utils/user/useUser";
+import { useCallback } from 'react';
+import type { FC } from 'react';
+import { Link } from 'react-router-dom';
+import styles from './index.module.css';
+import type { UserState } from '../../utils/user/useUser';
 
 interface Props {
   userState: UserState;
@@ -11,7 +11,7 @@ interface Props {
 
 const AppHeader: FC<Props> = ({ userState, onClickLogout }) => {
   const handleClickLogout = useCallback(() => {
-    if (typeof onClickLogout === "function") onClickLogout();
+    if (typeof onClickLogout === 'function') onClickLogout();
   }, []);
 
   return (

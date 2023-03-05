@@ -1,9 +1,8 @@
-import { useState, useCallback } from "react";
-import type { FC, ChangeEvent, FormEvent } from "react";
-import { useNavigate } from "react-router-dom";
-import { useUser } from "../../utils/user/useUser";
-import { logger } from "../../utils/logger/";
-import { UserInfo } from "../../interfaces/user";
+import { useState, useCallback } from 'react';
+import type { FC, ChangeEvent, FormEvent } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useUser } from '../../utils/user/useUser';
+import { logger } from '../../utils/logger/';
 
 interface FormValue {
   id: string;
@@ -14,8 +13,8 @@ const PageLogin: FC = () => {
   const navigate = useNavigate();
   const { login } = useUser();
   const [formValue, setFormValue] = useState<FormValue>({
-    id: "",
-    password: "",
+    id: '',
+    password: '',
   });
 
   const handleChangeInput = useCallback(
@@ -26,7 +25,7 @@ const PageLogin: FC = () => {
 
       setFormValue({ ...formValue, [id]: value });
     },
-    [formValue]
+    [formValue],
   );
 
   const handleSubmitForm = useCallback(
@@ -36,9 +35,9 @@ const PageLogin: FC = () => {
       const data = await login(formValue.id, formValue.password);
       logger.log(data);
 
-      navigate("/", { replace: true });
+      navigate('/', { replace: true });
     },
-    [formValue]
+    [formValue],
   );
 
   return (
