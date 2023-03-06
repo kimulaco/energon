@@ -59,6 +59,7 @@ const PageLogin: FC = () => {
           <input
             type="password"
             id="password"
+            autoComplete="off"
             required
             value={formValue.password}
             onChange={handleChangeInput}

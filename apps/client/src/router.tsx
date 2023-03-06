@@ -1,8 +1,9 @@
 import { createBrowserRouter, Navigate } from 'react-router-dom';
 import LayoutDefault from './layouts/Default';
 import PageIndex from './pages/Index';
-import PageNotFound from './pages/404';
 import PageLogin from './pages/login/Index';
+import PageNotFound from './pages/404';
+import PageError from './pages/error';
 
 export const router = createBrowserRouter([
   {
@@ -17,6 +18,10 @@ export const router = createBrowserRouter([
       {
         path: '/login',
         element: <PageLogin />,
+      },
+      {
+        path: '/error',
+        element: <PageError />,
       },
       {
         path: '/404',

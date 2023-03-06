@@ -5,7 +5,7 @@ import styles from './index.module.css';
 import type { UserState } from '../../utils/user/useUser';
 
 interface Props {
-  userState: UserState;
+  userState?: UserState;
   onClickLogout?: () => void;
 }
 
@@ -21,11 +21,11 @@ const AppHeader: FC<Props> = ({ userState, onClickLogout }) => {
 
         <div>
           <div className={styles.menu}>
-            {userState.isLogined && userState.user.name && (
+            {userState?.isLogined && userState.user.name && (
               <li className={styles.menuItem}>{userState.user.name}</li>
             )}
 
-            {userState.isLogined && (
+            {userState?.isLogined && (
               <li className={styles.menuItem}>
                 <button type="button" onClick={handleClickLogout}>
                   Logout
@@ -33,7 +33,7 @@ const AppHeader: FC<Props> = ({ userState, onClickLogout }) => {
               </li>
             )}
 
-            {!userState.isLogined && userState.user.id && (
+            {userState && !userState.isLogined && userState.user.id && (
               <li className={styles.menuItem}>
                 <Link to="/login">Login</Link>
               </li>

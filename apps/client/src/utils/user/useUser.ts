@@ -92,14 +92,14 @@ export const useUser = () => {
           });
 
           if (!data) throw new Error('in process fetching');
-
+        } catch (error) {
+          logger.error(error);
+          throw error;
+        } finally {
           Cookies.remove(ID_COOKIE_KEY);
           Cookies.remove(TOKEN_COOKIE_KEY);
           resetState();
           navigate('/login', { replace: true });
-        } catch (error) {
-          logger.error(error);
-          throw error;
         }
       };
     },

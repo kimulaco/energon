@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
 import AppHeader from '../components/AppHeader/';
 import { useAxios } from '../utils/axios/useAxios';
 import { useUser } from '../utils/user/useUser';
@@ -18,6 +18,7 @@ interface LayoutState {
 }
 
 const LayoutDefault = () => {
+  const navigate = useNavigate();
   const [layoutState, setLayoutState] = useState<LayoutState>({
     canRenderPage: false,
   });
@@ -35,14 +36,22 @@ const LayoutDefault = () => {
     }
   }, [userState.user.id, logout]);
 
+  const initLayout = useCallback(async () => {
+    try {
+      const data = await getHealth();
+
+      if (!data) return;
+
+      if (!data.health.server) throw new Error('Server error'); // TODO: error message
+
+      setLayoutState({ canRenderPage: true });
+    } catch {
+      navigate('/error?type=server_status', { replace: true });
+    }
+  }, [userState.user.id, logout]);
+
   useEffect(() => {
-    getHealth()
-      .then(() => {
-        setLayoutState({ canRenderPage: true });
-      })
-      .catch(() => {
-        // TODO: redirect error pag
-      });
+    initLayout();
   }, []);
 
   return (
