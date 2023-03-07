@@ -1,6 +1,8 @@
 import { useState, useCallback } from 'react';
 import type { FC, ChangeEvent, FormEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Box, Button, FormControl, FormLabel, Input } from '@mui/joy';
+import { AppPageTitle } from '../../components/AppPageTitle';
 import { useUser } from '../../utils/user/useUser';
 import { logger } from '../../utils/logger/';
 
@@ -19,11 +21,11 @@ const PageLogin: FC = () => {
 
   const handleChangeInput = useCallback(
     (event: ChangeEvent<HTMLInputElement>) => {
-      const { id, value } = event.target;
+      const { name, value } = event.target;
 
-      if (!id || !(id in formValue)) return;
+      if (!name || !(name in formValue)) return;
 
-      setFormValue({ ...formValue, [id]: value });
+      setFormValue({ ...formValue, [name]: value });
     },
     [formValue],
   );
@@ -41,36 +43,49 @@ const PageLogin: FC = () => {
   );
 
   return (
-    <div className="PageLogin">
-      <form onSubmit={handleSubmitForm}>
-        <div>
-          <label htmlFor="id">ID</label>
-          <input
-            type="text"
-            id="id"
-            required
-            value={formValue.id}
-            onChange={handleChangeInput}
-          />
-        </div>
+    <Box>
+      <Box
+        sx={{
+          maxWidth: '300px',
+          mt: 8,
+          mx: 'auto',
+          p: 4,
+        }}
+      >
+        <form onSubmit={handleSubmitForm}>
+          <AppPageTitle>Login</AppPageTitle>
 
-        <div>
-          <label htmlFor="password">Password</label>
-          <input
-            type="password"
-            id="password"
-            autoComplete="off"
-            required
-            value={formValue.password}
-            onChange={handleChangeInput}
-          />
-        </div>
+          <FormControl sx={{ mt: 2 }}>
+            <FormLabel>ID</FormLabel>
+            <Input
+              type="text"
+              name="id"
+              required
+              value={formValue.id}
+              onChange={handleChangeInput}
+            />
+          </FormControl>
 
-        <div>
-          <button type="submit">Login</button>
-        </div>
-      </form>
-    </div>
+          <FormControl sx={{ mt: 2 }}>
+            <FormLabel>Password</FormLabel>
+            <Input
+              type="password"
+              name="password"
+              autoComplete="off"
+              required
+              value={formValue.password}
+              onChange={handleChangeInput}
+            />
+          </FormControl>
+
+          <Box sx={{ mt: 2, display: 'flex', justifyContent: 'center' }}>
+            <Button type="submit" sx={{ minWidth: '120px' }}>
+              Login
+            </Button>
+          </Box>
+        </form>
+      </Box>
+    </Box>
   );
 };
 

@@ -15,22 +15,23 @@ export const router = createBrowserRouter([
         element: <PageIndex />,
         index: true,
       },
-      {
-        path: '/login',
-        element: <PageLogin />,
-      },
-      {
-        path: '/error',
-        element: <PageError />,
-      },
-      {
-        path: '/404',
-        element: <PageNotFound />,
-      },
-      {
-        path: '/*',
-        element: <Navigate replace to="/404" />,
-      },
     ],
+  },
+
+  {
+    path: '/login',
+    element: <PageLogin />,
+  },
+  {
+    path: '/error',
+    element: <PageError />,
+  },
+  {
+    path: '/404',
+    element: <PageNotFound />,
+  },
+  {
+    path: '/*',
+    element: <Navigate replace to="/404" />,
   },
 ]);
