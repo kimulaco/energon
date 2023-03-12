@@ -37,7 +37,7 @@ const PageLogin: FC = () => {
       const data = await login(formValue.id, formValue.password);
       logger.log(data);
 
-      navigate('/', { replace: true });
+      navigate('/dashbord', { replace: true });
     },
     [formValue],
   );

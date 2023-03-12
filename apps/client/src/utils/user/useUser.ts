@@ -1,12 +1,8 @@
 import { useCallback, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
-import {
-  atom,
-  useRecoilState,
-  useResetRecoilState,
-  useRecoilCallback,
-} from 'recoil';
+import { useRecoilState, useResetRecoilState, useRecoilCallback } from 'recoil';
 import Cookies from 'js-cookie';
+import { userAtom } from './atom';
 import { logger } from '../logger/';
 import { useAxios } from '../axios/useAxios';
 import {
@@ -15,23 +11,6 @@ import {
   SESSION_COOKIE_OPTION,
 } from '../../constants/cookie';
 import { UserInfo } from '../../interfaces/user';
-
-export interface UserState {
-  user: UserInfo;
-  isLogined: boolean;
-}
-
-const userAtom = atom<UserState>({
-  key: 'userAtom',
-  default: {
-    user: {
-      id: '',
-      name: '',
-      token: '',
-    },
-    isLogined: false,
-  },
-});
 
 interface ResponseLogin {
   statusCode: number;
