@@ -1,6 +1,6 @@
 import { useEffect, useCallback } from 'react';
 import type { FC } from 'react';
-import { useUser } from '../utils/user/useUser';
+import { useUser } from '../../utils/user/useUser';
 
 const PageIndex: FC = () => {
   const { state: userState, getUserInfo } = useUser();
