@@ -1,5 +1,5 @@
 import { atom } from 'recoil';
-import { UserInfo } from '../../interfaces/user';
+import { UserInfo } from '@/interfaces/user';
 
 export interface UserState {
   user: UserInfo;

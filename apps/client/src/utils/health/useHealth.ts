@@ -2,8 +2,8 @@ import { useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import { healthAtom } from './atom';
-import { useAxios } from '../axios/useAxios';
-import { Health } from '../../interfaces';
+import { useAxios } from '@/utils/axios/useAxios';
+import { Health } from '@/interfaces';
 
 interface ResponseHealth {
   statusCode: number;

@@ -1,8 +1,8 @@
 import { useEffect, useState, useCallback } from 'react';
 import { Box } from '@mui/joy';
 import { Outlet } from 'react-router-dom';
-import AppHeader from '../../components/AppHeader/';
-import { useHealth } from '../../utils/health/useHealth';
+import AppHeader from '@/components/AppHeader/';
+import { useHealth } from '@/utils/health/useHealth';
 
 interface LayoutState {
   canRenderPage: boolean;

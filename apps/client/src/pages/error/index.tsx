@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import type { FC } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { ERROR_CONFIG, ErrorConfig } from '../../constants/error';
+import { ERROR_CONFIG, ErrorConfig } from '@/constants/error';
 
 const PageError: FC = () => {
   const [searchParams] = useSearchParams();

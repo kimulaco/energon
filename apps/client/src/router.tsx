@@ -1,10 +1,10 @@
 import { createBrowserRouter, Navigate } from 'react-router-dom';
-import { LayoutDefault } from './layouts/default';
-import { LayoutDashboard } from './layouts/dashboard';
-import PageIndex from './pages/dashboard';
-import PageLogin from './pages/login';
-import PageNotFound from './pages/404';
-import PageError from './pages/error';
+import { LayoutDefault } from '@/layouts/default';
+import { LayoutDashboard } from '@/layouts/dashboard';
+import PageIndex from '@/pages/dashboard';
+import PageLogin from '@/pages/login';
+import PageNotFound from '@/pages/404';
+import PageError from '@/pages/error';
 
 export const router = createBrowserRouter([
   {

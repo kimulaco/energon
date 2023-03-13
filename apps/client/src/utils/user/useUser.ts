@@ -3,14 +3,14 @@ import { useNavigate } from 'react-router-dom';
 import { useRecoilState, useResetRecoilState, useRecoilCallback } from 'recoil';
 import Cookies from 'js-cookie';
 import { userAtom } from './atom';
-import { logger } from '../logger/';
-import { useAxios } from '../axios/useAxios';
+import { logger } from '@/utils/logger';
+import { useAxios } from '@/utils/axios/useAxios';
 import {
   ID_COOKIE_KEY,
   TOKEN_COOKIE_KEY,
   SESSION_COOKIE_OPTION,
-} from '../../constants/cookie';
-import { UserInfo } from '../../interfaces/user';
+} from '@/constants/cookie';
+import { UserInfo } from '@/interfaces/user';
 
 interface ResponseLogin {
   statusCode: number;

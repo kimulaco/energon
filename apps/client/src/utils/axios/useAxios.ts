@@ -2,7 +2,7 @@ import { useState, useCallback } from 'react';
 import deepmerge from 'deepmerge';
 import { instance as axios, AxiosRequestConfig } from './axios';
 import Cookies from 'js-cookie';
-import { TOKEN_COOKIE_KEY } from '../../constants/cookie';
+import { TOKEN_COOKIE_KEY } from '@/constants/cookie';
 
 interface AxiosFetchOption {
   config?: AxiosRequestConfig;

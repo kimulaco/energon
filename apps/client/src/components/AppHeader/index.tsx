@@ -4,7 +4,7 @@ import { Box, Typography } from '@mui/joy';
 import { Link } from 'react-router-dom';
 import { AppHeaderMenu } from './menu';
 import { innerStyle, titleStyle, menuStyle, menuItemStyle } from './styles';
-import type { UserState } from '../../utils/user';
+import type { UserState } from '@/utils/user';
 
 interface Props {
   userState?: UserState;

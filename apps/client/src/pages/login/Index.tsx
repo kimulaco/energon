@@ -2,9 +2,9 @@ import { useState, useCallback } from 'react';
 import type { FC, ChangeEvent, FormEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Box, Button, FormControl, FormLabel, Input } from '@mui/joy';
-import { AppPageTitle } from '../../components/AppPageTitle';
-import { useUser } from '../../utils/user/useUser';
-import { logger } from '../../utils/logger/';
+import { AppPageTitle } from '@/components/AppPageTitle';
+import { useUser } from '@/utils/user/useUser';
+import { logger } from '@/utils/logger/';
 
 interface FormValue {
   id: string;

@@ -4,7 +4,7 @@ import { RecoilRoot } from 'recoil';
 import { RouterProvider } from 'react-router-dom';
 import { router } from './router';
 import '@fontsource/public-sans';
-import './assets/css/global.css';
+import '@/assets/css/global.css';
 
 const main = async () => {
   if (import.meta.env.DEV) {
