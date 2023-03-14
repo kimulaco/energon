@@ -1,14 +1,18 @@
 import { useEffect, useCallback } from 'react';
 import type { FC } from 'react';
 import { useUser } from '@/utils/user/useUser';
+import { useElectric } from '@/utils/electric';
+import { ElectricBill } from '@/interfaces';
 
-const PageIndex: FC = () => {
+const PageDashbord: FC = () => {
   const { state: userState, getUserInfo } = useUser();
+  const { electric, getElectricBillList } = useElectric();
 
   const initPage = useCallback(async () => {
     if (userState.isLogined) return;
 
-    getUserInfo();
+    await getUserInfo();
+    await getElectricBillList();
   }, [getUserInfo]);
 
   useEffect(() => {
@@ -16,10 +20,23 @@ const PageIndex: FC = () => {
   }, []);
 
   return (
-    <div className="PageIndex">
+    <div className="PageDashbord">
       <p>top</p>
+
+      {Array.isArray(electric?.list) && electric.list.length > 0 && (
+        <section>
+          <h2>Electric</h2>
+          {electric.list.map((bill: ElectricBill) => {
+            return (
+              <div key={`${bill.year}-${bill.month}`}>
+                {bill.year}-{bill.month}: {bill.amount}
+              </div>
+            );
+          })}
+        </section>
+      )}
     </div>
   );
 };
 
-export default PageIndex;
+export default PageDashbord;

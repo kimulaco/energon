@@ -1,5 +1,7 @@
 import { getHealth } from './api/health';
 import { getUserInfo, login, logout } from './api/user';
+import { getElectricList } from './api/electric';
+import { getGasList } from './api/gas';
 
 export const handlers = [
   // Health API
@@ -9,4 +11,10 @@ export const handlers = [
   getUserInfo,
   login,
   logout,
+
+  // Electric API
+  getElectricList,
+
+  // Gas API
+  getGasList,
 ];

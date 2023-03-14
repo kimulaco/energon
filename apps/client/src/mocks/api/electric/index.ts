@@ -2,7 +2,7 @@ import { rest } from 'msw';
 
 const API_URL = import.meta.env.VITE_API_BASE_URL || '';
 
-export const getGasList = rest.get(
+export const getElectricList = rest.get(
   `${API_URL}/api/electric/list`,
   (req, res, ctx) => {
     return res(
